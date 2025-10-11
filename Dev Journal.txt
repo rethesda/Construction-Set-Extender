@@ -17,6 +17,7 @@ NOTE	---->
 CSE		---->
 
 	BUGFIX			=
+		> Batch lip gen is very slow (c.f Vorians' post from 19 April 2025, 10:51AM)
 		> Render window OSD
 			> The first right click inside the OSD after opening the context menu is ignored.
 		> Check if the Launch Game button works correctly with the Steam version of the game
@@ -48,6 +49,7 @@ CSE		---->
 		> Speed up the Export Dialogue tool
 			> Also add progress counter
 		> Could you modify the X and Y coordinate boxes in the Cell View so that hitting the tab key will move the cursor to the Y box? Type in an X coordinate, hit tab, then enter a Y coordinate. 
+		>  currently you can either export face textures either single NPC by single  NPC  or by a global export that involve processing all defined NPCs. I wonder if it could be possible to implement in CSE a new mode: Export New NPCs Texture (or export NPC textures from active file)  that only export face textures from the active file, plus another to export overrode NPCs by the active file only 
 		> Option to disable loading all BSA archives (or just loading the ones used by the current loaded plugins)
 		> In the creature creation window, when you tick the box to make the creature leveled (PC level offset), the numbers in the creature stats tab don't change. Which means that your creature is suddenly becoming incredibly overpowered as the numbers are now interpreted as multipliers. Would it be possible to make it so that ticking that box would also recalculate the numbers, please?
 		> Paste-in-place for Global paste
@@ -81,7 +83,7 @@ CSE		---->
 					- It's large enough to contain its children
 				- We update the rects bottom-up and then resize and move the windows
 			> Blacklist some windows
-
+		> Folder support for prefabs (directory support inside the root folder)
 
 	CODA			=
 		> Get/SetCellRegions
