@@ -1205,6 +1205,28 @@ namespace cse
 			return BGSEEUI->GetWindowHandleCollection(bgsee::UIManager::kHandleCollection_DragDropableWindows)->GetExists(Handle);
 		}
 
+		LRESULT __stdcall DoTESDialogGetIsWindowDragDropRecipientHookSendMessageDetour(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam)
+		{
+			// Stupid Bethesda uses WM_USER incorrectly - it's only supposed to be used for messages in private window classes.
+			// But they naturally pass it around willy-nilly, and this inevitably leads to situations where the target window
+			// has a pre-defined message with the same ordianl/value, e.g: the tooltip class' TTM_GETTOOLINFOA message. When this 
+			// happens, the parameters get misinterpreted and lead to crashes.
+			// 
+			// This probably applies to every other WM_USER message they use as well, but the one used to detect drag-drop targets
+			// is the most egregious as it gets sent with every mouse move. Since the message handler that's supposed to process
+			// this message can only be part of a top-level dialog handler, we'll exclude every other window class.
+
+			char WindowClassName[0x200];
+			GetClassName(hWnd, WindowClassName, ARRAYSIZE(WindowClassName));
+
+			if (_stricmp("#32770", WindowClassName)) {
+				return FALSE; // Not a dialog class
+			}
+
+			return SendMessage(hWnd, Msg, wParam, lParam);
+		}
+
+
 		#define _hhName		TESDialogGetIsWindowDragDropRecipient
 		_hhBegin()
 		{
@@ -1212,11 +1234,7 @@ namespace cse
 			_hhSetVar(Jump, 0x0044341F);
 			__asm
 			{
-				pushad
-				call	IATCacheSendMessageAddress
-				popad
-
-				call	[IATProcBuffer]
+				call	DoTESDialogGetIsWindowDragDropRecipientHookSendMessageDetour
 				test	eax, eax
 				jz		FAIL
 

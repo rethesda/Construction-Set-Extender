@@ -525,7 +525,8 @@ public:
 
 	enum
 	{
-		kWindowMessage_HandleDragDrop = 0x407,		// lParam = POINT* mousePos
+		kWindowMessage_HandleDragDrop = 0x407,			// lParam = POINT* MousePos
+		kWindowMessage_IsValidDragDropTarget = 0x408,	// wParam = UInt16 FormType, lParam = HWND WindowUnderCursor; returns TRUE/FALSE
 		kWindowMessage_Destroy = 0x417,
 		kWindowMessage_Refresh = 0x41A,
 	};
